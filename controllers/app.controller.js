@@ -1,7 +1,7 @@
 const db = require("../db/queries");
 const bcrypt = require("bcryptjs");
 const { body, validationResult } = require("express-validator");
-const passport = require("../configs/passport.config");
+const passport = require("passport");
 const asyncHandler = require("express-async-handler");
 
 async function getHome(req, res) {
@@ -33,14 +33,9 @@ async function postSignUp(req, res, next) {
     });
   }
   // Continue with the sign-up logic
-  const isAdmin = req.body.isAdmin === "true";
   bcrypt.hash(req.body.password, 10, async (err, hashedPassword) => {
     try {
-      const newUser = await db.insertNewUser(
-        req.body.user_name,
-        hashedPassword,
-        isAdmin
-      );
+      const newUser = await db.insertNewUser(req.body.username, hashedPassword);
       // Automatically log in the user after sign-up
       req.login(newUser, (err) => {
         if (err) {

@@ -1,26 +1,32 @@
 const { PrismaClient } = require("@prisma/client");
-
 const prisma = new PrismaClient();
 
-async function insertNewUser(user_name, hashedPassword, isAdmin) {
-  await pool.query(
-    "INSERT INTO users (user_name, user_password, isAdmin) VALUES ($1, $2, $3)",
-    [user_name, hashedPassword, isAdmin]
-  );
-  const newUser = getUserByUsername(user_name);
-  return newUser;
+async function insertNewUser(username, hashedPassword) {
+  const user = await prisma.user.create({
+    data: {
+      username: username,
+      password: hashedPassword,
+    },
+  });
+  return user;
 }
 
 async function getUserByID(id) {
-  const query = "SELECT * FROM users WHERE user_id = $1";
-  const { rows } = await pool.query(query, [id]);
-  return rows[0];
+  const user = await prisma.user.findUnique({
+    where: {
+      id: id,
+    },
+  });
+  return user;
 }
 
 async function getUserByUsername(username) {
-  const query = "SELECT * FROM users WHERE user_name = $1";
-  const { rows } = await pool.query(query, [username]);
-  return rows[0];
+  const user = await prisma.user.findUnique({
+    where: {
+      username: username,
+    },
+  });
+  return user;
 }
 
 module.exports = {
