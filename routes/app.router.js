@@ -7,9 +7,9 @@ const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "uploads/");
   },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname);
-  },
+  // filename: function (req, file, cb) {
+  //   cb(null, file.originalname);
+  // },
 });
 const upload = multer({ storage: storage });
 
@@ -21,5 +21,6 @@ router.post("/log-in", controller.logInUser);
 router.get("/log-out", controller.logOutUser);
 
 router.post("/upload", upload.single("file"), controller.uploadFile);
+router.post("/createFolder", controller.createFolder);
 
 module.exports = router;

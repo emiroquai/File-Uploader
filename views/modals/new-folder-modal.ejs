@@ -42,7 +42,7 @@
         ></button>
       </div>
       <div class="modal-body">
-        <form action="POST" method="post">
+        <form id="createFolder" action="/createFolder" method="post">
           <div class="mb-3">
             <label for="name" class="form-label">Name</label>
             <input
@@ -50,8 +50,10 @@
               class="form-control"
               id="name"
               name="name"
+              value="New Folder"
               required
             />
+            <input type="hidden" name="folderId" value="<%= folder.id %>" />
           </div>
         </form>
       </div>
@@ -59,8 +61,15 @@
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
           Close
         </button>
-        <button type="button" class="btn btn-primary">Save</button>
+        <button type="submit" class="btn btn-primary" onclick="submitForm()">
+          Save
+        </button>
       </div>
     </div>
   </div>
 </div>
+<script>
+  function submitForm() {
+    document.getElementById("createFolder").submit();
+  }
+</script>

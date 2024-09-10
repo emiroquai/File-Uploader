@@ -5,7 +5,25 @@ const passport = require("passport");
 const asyncHandler = require("express-async-handler");
 
 async function getHome(req, res) {
-  res.render("home", { user: req.user });
+  if (req.user) {
+    const homeFolder = await db.getHomeFolderByUserId(req.user.id);
+    const SubFolders = await db.getSubFoldersByParentId(homeFolder.id);
+    const files = await db.getFilesByFolderId(homeFolder.id);
+    console.log("User: ", req.user);
+    console.log("Home folder: ", homeFolder);
+    res.render("home", {
+      user: req.user,
+      folder: homeFolder,
+      subfolders: SubFolders,
+      files: files,
+    });
+  } else {
+    res.render("home", {
+      user: req.user,
+      folder: null,
+      files: null,
+    });
+  }
 }
 
 async function getSignUp(req, res) {
@@ -36,6 +54,10 @@ async function postSignUp(req, res, next) {
   bcrypt.hash(req.body.password, 10, async (err, hashedPassword) => {
     try {
       const newUser = await db.insertNewUser(req.body.username, hashedPassword);
+
+      // Create a home folder for new user
+      await db.createHomeFolder(newUser.id);
+
       // Automatically log in the user after sign-up
       req.login(newUser, (err) => {
         if (err) {
@@ -68,8 +90,19 @@ const uploadFile = asyncHandler(async (req, res, next) => {
   if (!req.file) {
     return res.status(400).send("No file uploaded.");
   }
-  console.log(req.file); // File info
-  res.send(`File ${req.file.originalname} uploaded successfully.`);
+  console.log("File Uploaded:", req.file);
+  await db.insertNewFile(
+    req.file.originalname,
+    req.file.path,
+    req.file.size,
+    req.body.folderId
+  );
+  res.redirect("/");
+});
+
+const createFolder = asyncHandler(async (req, res, next) => {
+  await db.createNewFolder(req.body.name, req.user.id, req.body.folderId);
+  res.redirect("/");
 });
 
 module.exports = {
@@ -80,4 +113,5 @@ module.exports = {
   logInUser,
   logOutUser,
   uploadFile,
+  createFolder,
 };

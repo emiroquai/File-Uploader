@@ -44,6 +44,7 @@
       <div class="modal-body">
         <form action="/upload" enctype="multipart/form-data" method="POST">
           <input type="file" name="file" />
+          <input type="hidden" name="folderId" value="<%= folder.id %>" />
           <input type="submit" value="Upload" class="btn btn-primary" />
         </form>
       </div>
