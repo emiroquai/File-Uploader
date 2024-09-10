@@ -10,12 +10,10 @@
           Log Out
         </button>
       </div>
-      <form action="/upload" enctype="multipart/form-data" method="POST">
-        <input type="file" name="file" />
-        <input type="submit" value="Upload" class="button-9" />
-      </form>
-      <!-- Bootstrap Modal -->
-      <%- include('./modals/new-folder-modal') %> <% } else { %>
+      <!-- Bootstrap Modal - New Folder -->
+      <%- include('./modals/new-folder-modal') %>
+      <!-- Bootstrap Modal - New File -->
+      <%- include('./modals/new-file-modal') %> <% } else { %>
       <div class="login-box">
         <h2>Login</h2>
         <form action="/log-in" method="POST" autocomplete="off">
