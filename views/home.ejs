@@ -4,10 +4,12 @@
     <%- include('./partials/header') %>
     <main>
       <% if (user) {%>
-      <p>Welcome <%= user.username %></p>
-      <button class="button-9" onclick="window.location.href='/log-out';">
-        Log Out
-      </button>
+      <div>
+        <p><%= user.username %>'s Drive</p>
+        <button class="button-9" onclick="window.location.href='/log-out';">
+          Log Out
+        </button>
+      </div>
       <form action="/upload" enctype="multipart/form-data" method="POST">
         <input type="file" name="file" />
         <input type="submit" value="Upload" class="button-9" />
