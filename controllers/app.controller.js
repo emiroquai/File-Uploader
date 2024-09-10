@@ -63,6 +63,15 @@ const logOutUser = asyncHandler(async (req, res, next) => {
   });
 });
 
+// Upload file with multer
+const uploadFile = asyncHandler(async (req, res, next) => {
+  if (!req.file) {
+    return res.status(400).send("No file uploaded.");
+  }
+  console.log(req.file); // File info
+  res.send(`File ${req.file.originalname} uploaded successfully.`);
+});
+
 module.exports = {
   getHome,
   getSignUp,
@@ -70,4 +79,5 @@ module.exports = {
   postSignUp,
   logInUser,
   logOutUser,
+  uploadFile,
 };
