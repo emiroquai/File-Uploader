@@ -37,6 +37,7 @@ async function createNewFolder(name, userId, parentId) {
       parentID: parentId,
     },
   });
+  return folder;
 }
 
 async function createHomeFolder(userId) {
@@ -88,6 +89,17 @@ async function getSubFoldersByParentId(folderId) {
   return SubFolders;
 }
 
+async function updateFolderName(id, newName) {
+  await prisma.folder.update({
+    where: {
+      id: id,
+    },
+    data: {
+      name: newName,
+    },
+  });
+}
+
 module.exports = {
   insertNewUser,
   getUserByID,
@@ -98,4 +110,5 @@ module.exports = {
   insertNewFile,
   getFilesByFolderId,
   getSubFoldersByParentId,
+  updateFolderName,
 };

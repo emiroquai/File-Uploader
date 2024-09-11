@@ -3,7 +3,7 @@
   type="button"
   class="btn btn-primary btn-sm"
   data-bs-toggle="modal"
-  data-bs-target="#newFoldereModal"
+  data-bs-target="#newFolderModal"
 >
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -25,7 +25,7 @@
 
 <div
   class="modal fade"
-  id="newFoldereModal"
+  id="newFolderModal"
   tabindex="-1"
   aria-labelledby="exampleModalLabel"
   aria-hidden="true"
@@ -53,7 +53,7 @@
               value="New Folder"
               required
             />
-            <input type="hidden" name="folderId" value="<%= folder.id %>" />
+            <input type="hidden" name="folderId" value="<%= topfolder.id %>" />
           </div>
         </form>
       </div>
@@ -61,15 +61,10 @@
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
           Close
         </button>
-        <button type="submit" class="btn btn-primary" onclick="submitForm()">
+        <button type="submit" class="btn btn-primary" form="createFolder"">
           Save
         </button>
       </div>
     </div>
   </div>
 </div>
-<script>
-  function submitForm() {
-    document.getElementById("createFolder").submit();
-  }
-</script>

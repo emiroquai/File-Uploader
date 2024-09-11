@@ -13,7 +13,7 @@ async function getHome(req, res) {
     console.log("Home folder: ", homeFolder);
     res.render("home", {
       user: req.user,
-      folder: homeFolder,
+      topfolder: homeFolder,
       subfolders: SubFolders,
       files: files,
     });
@@ -105,6 +105,11 @@ const createFolder = asyncHandler(async (req, res, next) => {
   res.redirect("/");
 });
 
+const renameFolderPost = asyncHandler(async (req, res, next) => {
+  await db.updateFolderName(req.body.id, req.body.name);
+  res.redirect("/");
+});
+
 module.exports = {
   getHome,
   getSignUp,
@@ -114,4 +119,5 @@ module.exports = {
   logOutUser,
   uploadFile,
   createFolder,
+  renameFolderPost,
 };

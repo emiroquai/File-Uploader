@@ -21,6 +21,8 @@ router.post("/log-in", controller.logInUser);
 router.get("/log-out", controller.logOutUser);
 
 router.post("/upload", upload.single("file"), controller.uploadFile);
+
 router.post("/createFolder", controller.createFolder);
+router.post("/renameFolder", controller.renameFolderPost);
 
 module.exports = router;
