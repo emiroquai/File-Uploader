@@ -230,5 +230,9 @@ footer {
   padding: 10px 15px;
 }
 
+.red {
+  color: red;
+}
+
 @media only screen and (max-width: 767px) {
 }

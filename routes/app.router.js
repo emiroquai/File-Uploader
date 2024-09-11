@@ -24,5 +24,6 @@ router.post("/upload", upload.single("file"), controller.uploadFile);
 
 router.post("/createFolder", controller.createFolder);
 router.post("/renameFolder", controller.renameFolderPost);
+router.get("/deleteFolder/:id", controller.deleteFolder);
 
 module.exports = router;

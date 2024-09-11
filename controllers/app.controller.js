@@ -110,6 +110,11 @@ const renameFolderPost = asyncHandler(async (req, res, next) => {
   res.redirect("/");
 });
 
+const deleteFolder = asyncHandler(async (req, res, next) => {
+  await db.deleteFolder(req.params.id);
+  res.redirect("/");
+});
+
 module.exports = {
   getHome,
   getSignUp,
@@ -120,4 +125,5 @@ module.exports = {
   uploadFile,
   createFolder,
   renameFolderPost,
+  deleteFolder,
 };

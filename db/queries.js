@@ -100,6 +100,14 @@ async function updateFolderName(id, newName) {
   });
 }
 
+async function deleteFolder(id) {
+  await prisma.folder.delete({
+    where: {
+      id: id,
+    },
+  });
+}
+
 module.exports = {
   insertNewUser,
   getUserByID,
@@ -111,4 +119,5 @@ module.exports = {
   getFilesByFolderId,
   getSubFoldersByParentId,
   updateFolderName,
+  deleteFolder,
 };
