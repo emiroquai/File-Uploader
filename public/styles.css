@@ -234,5 +234,13 @@ footer {
   color: red;
 }
 
+.bi-folder {
+  color: var(--bs-blue);
+}
+
+.bi-file {
+  color: var(--bs-teal);
+}
+
 @media only screen and (max-width: 767px) {
 }
