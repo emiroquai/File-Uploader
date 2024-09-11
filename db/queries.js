@@ -100,14 +100,48 @@ async function updateFolderName(id, newName) {
   });
 }
 
+async function deleteFilesInFolder(folderId) {
+  await prisma.file.deleteMany({
+    where: {
+      folderId: folderId,
+    },
+  });
+}
+
+async function deleteSubfolders(folderId) {
+  // Get all subfolders
+  const subfolders = await prisma.folder.findMany({
+    where: {
+      parentID: folderId,
+    },
+  });
+
+  // Recursively delete each subfolder
+  for (const subfolder of subfolders) {
+    await deleteFilesInFolder(subfolder.id); // Delete files in subfolder
+    await deleteSubfolders(subfolder.id); // Recursively delete subfolder
+    await prisma.folder.delete({
+      where: {
+        id: subfolder.id,
+      },
+    });
+  }
+}
+
 async function deleteFolder(id) {
+  // First delete all files in the folder
+  await deleteFilesInFolder(id);
+
+  // Then delete all subfolders recursively
+  await deleteSubfolders(id);
+
+  // Finally delete the folder itself
   await prisma.folder.delete({
     where: {
       id: id,
     },
   });
 }
-
 async function getFolderById(id) {
   const folder = await prisma.folder.findUnique({
     where: {
