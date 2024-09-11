@@ -9,8 +9,8 @@ async function getHome(req, res) {
     const homeFolder = await db.getHomeFolderByUserId(req.user.id);
     const SubFolders = await db.getSubFoldersByParentId(homeFolder.id);
     const files = await db.getFilesByFolderId(homeFolder.id);
-    console.log("User: ", req.user);
-    console.log("Home folder: ", homeFolder);
+    // console.log("User: ", req.user);
+    // console.log("Home folder: ", homeFolder);
     res.render("home", {
       user: req.user,
       topfolder: homeFolder,
@@ -97,22 +97,43 @@ const uploadFile = asyncHandler(async (req, res, next) => {
     req.file.size,
     req.body.folderId
   );
-  res.redirect("/");
+  reloadPage(res, req);
 });
+
+const reloadPage = (res, req) => {
+  const referer = req.get("Referer") || "/";
+  res.redirect(referer);
+};
 
 const createFolder = asyncHandler(async (req, res, next) => {
   await db.createNewFolder(req.body.name, req.user.id, req.body.folderId);
-  res.redirect("/");
+  reloadPage(res, req);
 });
 
 const renameFolderPost = asyncHandler(async (req, res, next) => {
   await db.updateFolderName(req.body.id, req.body.name);
-  res.redirect("/");
+  reloadPage(res, req);
 });
 
 const deleteFolder = asyncHandler(async (req, res, next) => {
   await db.deleteFolder(req.params.id);
-  res.redirect("/");
+  reloadPage(res, req);
+});
+
+const getFolderById = asyncHandler(async (req, res, next) => {
+  const id = req.params.id;
+  const folder = await db.getFolderById(id);
+  const subFolders = await db.getSubFoldersByParentId(id);
+  const files = await db.getFilesByFolderId(id);
+
+  console.log("Folder:", folder);
+
+  res.render("home", {
+    user: req.user,
+    topfolder: folder,
+    subfolders: subFolders,
+    files: files,
+  });
 });
 
 module.exports = {
@@ -126,4 +147,5 @@ module.exports = {
   createFolder,
   renameFolderPost,
   deleteFolder,
+  getFolderById,
 };
