@@ -197,10 +197,6 @@ footer {
   margin: 0;
 }
 
-.title:hover {
-  background-color: lightgrey;
-}
-
 .top-folder {
   border-bottom: 1px solid grey;
   padding: 5px 5px;
@@ -241,6 +237,14 @@ footer {
 
 .bi-file {
   color: var(--bs-teal);
+}
+
+table tbody tr td {
+  vertical-align: middle;
+}
+
+.dropdown-item.red:hover {
+  color: red !important;
 }
 
 @media only screen and (max-width: 767px) {
