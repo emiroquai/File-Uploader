@@ -3,11 +3,7 @@ const router = Router();
 const controller = require("../controllers/app.controller");
 
 const multer = require("multer");
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads/");
-  },
-});
+const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 router.get("/", controller.getHome);

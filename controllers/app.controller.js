@@ -5,6 +5,7 @@ const passport = require("passport");
 const asyncHandler = require("express-async-handler");
 
 const cloudinary = require("../configs/cloudinary.config");
+const { Readable } = require("stream");
 
 async function getHome(req, res) {
   if (req.user) {
@@ -93,9 +94,19 @@ const uploadFile = asyncHandler(async (req, res, next) => {
     return res.status(400).send("No file uploaded.");
   }
   console.log("File Uploaded to file system:", req.file);
-  const uploadResult = await cloudinary.uploader.upload(req.file.path);
+  const uploadResult = await new Promise((resolve, reject) => {
+    const uploadStream = cloudinary.uploader.upload_stream((error, result) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(result); // This result contains the file URL
+      }
+    });
+
+    const stream = Readable.from(req.file.buffer);
+    stream.pipe(uploadStream);
+  });
   console.log("File uploaded to Cloudinary:", uploadResult);
-  await db.deleteFileLocal(req.file.path);
   await db.insertNewFile(
     req.file.originalname,
     uploadResult.url,

@@ -178,9 +178,7 @@ async function deleteFileLocal(filePath) {
   });
 }
 
-async function deleteFile(fileId, filePath) {
-  // Delete file from the file system
-  deleteFileLocal(filePath);
+async function deleteFile(fileId) {
   // Delete file from the database
   await prisma.file.delete({
     where: {
