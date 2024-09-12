@@ -87,6 +87,8 @@ button {
   box-shadow: 0 15px 25px rgba(0, 0, 0, 0.6);
   border-radius: 10px;
   color: #fff;
+  align-self: center;
+  margin-top: 50px;
 }
 
 .login-box h2 {
