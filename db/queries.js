@@ -1,5 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
+const fs = require("fs");
 
 async function insertNewUser(username, hashedPassword) {
   const user = await prisma.user.create({
@@ -101,11 +102,15 @@ async function updateFolderName(id, newName) {
 }
 
 async function deleteFilesInFolder(folderId) {
-  await prisma.file.deleteMany({
+  const files = await prisma.file.findMany({
     where: {
       folderId: folderId,
     },
   });
+
+  for (const file of files) {
+    deleteFile(file.id, file.path);
+  }
 }
 
 async function deleteSubfolders(folderId) {
@@ -151,6 +156,32 @@ async function getFolderById(id) {
   return folder;
 }
 
+async function deleteFile(fileId, filePath) {
+  // Delete file from the file system
+  fs.unlink(filePath, (err) => {
+    if (err) {
+      console.error("Error deleting file:", err);
+    } else {
+      console.log("File deleted successfully:", filePath);
+    }
+  });
+  // Delete file from the database
+  await prisma.file.delete({
+    where: {
+      id: fileId,
+    },
+  });
+}
+
+async function getFileById(id) {
+  const file = await prisma.file.findUnique({
+    where: {
+      id: id,
+    },
+  });
+  return file;
+}
+
 module.exports = {
   insertNewUser,
   getUserByID,
@@ -164,4 +195,6 @@ module.exports = {
   updateFolderName,
   deleteFolder,
   getFolderById,
+  deleteFile,
+  getFileById,
 };

@@ -27,4 +27,6 @@ router.post("/renameFolder", controller.renameFolderPost);
 router.get("/deleteFolder/:id", controller.deleteFolder);
 router.get("/drive/:id", controller.getFolderById);
 
+router.get("/deleteFile/:id", controller.deleteFile);
+
 module.exports = router;
