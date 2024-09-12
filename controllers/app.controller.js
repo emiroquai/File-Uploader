@@ -4,6 +4,8 @@ const { body, validationResult } = require("express-validator");
 const passport = require("passport");
 const asyncHandler = require("express-async-handler");
 
+const cloudinary = require("../configs/cloudinary.config");
+
 async function getHome(req, res) {
   if (req.user) {
     const homeFolder = await db.getHomeFolderByUserId(req.user.id);
@@ -90,10 +92,13 @@ const uploadFile = asyncHandler(async (req, res, next) => {
   if (!req.file) {
     return res.status(400).send("No file uploaded.");
   }
-  console.log("File Uploaded:", req.file);
+  console.log("File Uploaded to file system:", req.file);
+  const uploadResult = await cloudinary.uploader.upload(req.file.path);
+  console.log("File uploaded to Cloudinary:", uploadResult);
+  await db.deleteFileLocal(req.file.path);
   await db.insertNewFile(
     req.file.originalname,
-    req.file.path,
+    uploadResult.url,
     req.file.size,
     req.body.folderId
   );

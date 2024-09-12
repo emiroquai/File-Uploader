@@ -69,7 +69,7 @@ async function insertNewFile(name, path, size, folderId) {
       folderId: folderId,
     },
   });
-  console.log("File created:", file);
+  console.log("File added to the database:", file);
 }
 
 async function getFilesByFolderId(folderId) {
@@ -167,15 +167,20 @@ async function getFolderById(id) {
   return folder;
 }
 
-async function deleteFile(fileId, filePath) {
+async function deleteFileLocal(filePath) {
   // Delete file from the file system
   fs.unlink(filePath, (err) => {
     if (err) {
       console.error("Error deleting file:", err);
     } else {
-      console.log("File deleted successfully:", filePath);
+      console.log("File deleted successfully from the file system:", filePath);
     }
   });
+}
+
+async function deleteFile(fileId, filePath) {
+  // Delete file from the file system
+  deleteFileLocal(filePath);
   // Delete file from the database
   await prisma.file.delete({
     where: {
@@ -209,4 +214,5 @@ module.exports = {
   deleteFile,
   getFileById,
   updateFileName,
+  deleteFileLocal,
 };
