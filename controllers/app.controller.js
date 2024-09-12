@@ -143,6 +143,11 @@ const deleteFile = asyncHandler(async (req, res, next) => {
   reloadPage(res, req);
 });
 
+const renameFilePost = asyncHandler(async (req, res, next) => {
+  await db.updateFileName(req.body.id, req.body.name);
+  reloadPage(res, req);
+});
+
 module.exports = {
   getHome,
   getSignUp,
@@ -156,4 +161,5 @@ module.exports = {
   deleteFolder,
   getFolderById,
   deleteFile,
+  renameFilePost,
 };

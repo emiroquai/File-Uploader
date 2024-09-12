@@ -101,6 +101,17 @@ async function updateFolderName(id, newName) {
   });
 }
 
+async function updateFileName(id, newName) {
+  await prisma.file.update({
+    where: {
+      id: id,
+    },
+    data: {
+      name: newName,
+    },
+  });
+}
+
 async function deleteFilesInFolder(folderId) {
   const files = await prisma.file.findMany({
     where: {
@@ -197,4 +208,5 @@ module.exports = {
   getFolderById,
   deleteFile,
   getFileById,
+  updateFileName,
 };

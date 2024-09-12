@@ -1,0 +1,50 @@
+<!-- Button trigger modal -->
+<div
+  class="modal fade"
+  id="renameFileModal-<%= file.id %>"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Rename File</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form id="renameFile-<%= file.id %>" action="/renameFile" method="post">
+          <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input
+              type="text"
+              class="form-control"
+              id="name"
+              name="name"
+              value="<%= file.name %>"
+              required
+            />
+            <input type="hidden" name="id" value="<%= file.id %>" />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          form="renameFile-<%= file.id %>"
+        >
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
