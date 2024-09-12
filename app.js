@@ -36,6 +36,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use("/", router);
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 const port = process.env.PORT || 3000;
 app.listen(port, "0.0.0.0", () =>
