@@ -8,6 +8,7 @@ Tech Stack Used:
 
 - Express
 - ejs
+- bootstrap
 - Prisma
 - PostgreSQL
 - Passport
